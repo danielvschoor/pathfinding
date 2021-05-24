@@ -12,11 +12,13 @@ pub mod strongly_connected_components;
 pub mod topological_sort;
 pub mod yen;
 
+use fxhash::FxBuildHasher;
 use indexmap::IndexMap;
+type FxIndexMap<K, V> = IndexMap<K, V, FxBuildHasher>;
 use std::hash::Hash;
 
 #[allow(clippy::needless_collect)]
-fn reverse_path<N, V, F>(parents: &IndexMap<N, V>, mut parent: F, start: usize) -> Vec<N>
+fn reverse_path<N, V, F>(parents: &FxIndexMap<N, V>, mut parent: F, start: usize) -> Vec<N>
 where
     N: Eq + Hash + Clone,
     F: FnMut(&V) -> usize,

@@ -2,7 +2,9 @@
 //! algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm).
 
 use indexmap::map::Entry::{Occupied, Vacant};
+use fxhash::FxBuildHasher;
 use indexmap::IndexMap;
+type FxIndexMap<K, V> = IndexMap<K, V, FxBuildHasher>;
 use num_traits::Zero;
 use std::cmp::Ordering;
 use std::collections::{BinaryHeap, HashSet};
@@ -97,7 +99,7 @@ where
         cost: Zero::zero(),
         index: 0,
     });
-    let mut parents: IndexMap<N, (usize, C)> = IndexMap::new();
+    let mut parents: FxIndexMap<N, (usize, C)> = FxIndexMap::default();
     parents.insert(start.clone(), (usize::max_value(), Zero::zero()));
     while let Some(SmallestCostHolder { cost, index, .. }) = to_see.pop() {
         let successors = {
@@ -188,7 +190,7 @@ where
         cost: Zero::zero(),
         index: 0,
     });
-    let mut parents: IndexMap<N, (HashSet<usize>, C)> = IndexMap::new();
+    let mut parents: FxIndexMap<N, (HashSet<usize>, C)> = FxIndexMap::default();
     parents.insert(start.clone(), (HashSet::new(), Zero::zero()));
     while let Some(SmallestCostHolder {
         cost,

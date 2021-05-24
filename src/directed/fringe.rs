@@ -3,7 +3,9 @@
 
 use super::reverse_path;
 use indexmap::map::Entry::{Occupied, Vacant};
+use fxhash::FxBuildHasher;
 use indexmap::IndexMap;
+type FxIndexMap<K, V> = IndexMap<K, V, FxBuildHasher>;
 use num_traits::{Bounded, Zero};
 use std::collections::VecDeque;
 use std::hash::Hash;
@@ -94,7 +96,7 @@ where
 {
     let mut now = VecDeque::new();
     let mut later = VecDeque::new();
-    let mut parents: IndexMap<N, (usize, C)> = IndexMap::new();
+    let mut parents: FxIndexMap<N, (usize, C)> = FxIndexMap::default();
     let mut flimit = heuristic(start);
     now.push_back(0);
     parents.insert(start.clone(), (usize::max_value(), Zero::zero()));

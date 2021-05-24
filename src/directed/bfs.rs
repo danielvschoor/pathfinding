@@ -2,7 +2,9 @@
 //! algorithm](https://en.wikipedia.org/wiki/Breadth-first_search).
 
 use indexmap::map::Entry::Vacant;
+use fxhash::FxBuildHasher;
 use indexmap::IndexMap;
+type FxIndexMap<K, V> = IndexMap<K, V, FxBuildHasher>;
 use std::collections::{HashSet, VecDeque};
 use std::hash::Hash;
 use std::usize;
@@ -90,7 +92,7 @@ where
         return Some(vec![start.clone()]);
     }
     let mut to_see = VecDeque::new();
-    let mut parents: IndexMap<N, usize> = IndexMap::new();
+    let mut parents: FxIndexMap<N, usize> = FxIndexMap::default();
     to_see.push_back(0);
     parents.insert(start.clone(), usize::max_value());
     while let Some(i) = to_see.pop_front() {
